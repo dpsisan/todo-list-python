@@ -1,4 +1,16 @@
+## current working directory
+import os
+print("cwd :")
+print(os.getcwd())
+
+
 tasks = []
+
+try:
+     with open("todolist_file.txt","r") as file:
+          tasks = file.read().splitlines()
+except FileNotFoundError:
+     pass
 
 while True:
       print("\n------ TO DO List----")
@@ -12,7 +24,12 @@ while True:
       if choice == "1":
             task = input("Enter task: ")
             tasks.append(task)
-            print("task added :) ")
+            
+            with open("todolist_file.txt", "a") as file:
+                   file.write(task + "\n")
+                  
+                   print("Task written successfully")
+            
         
       elif choice == "2":
             if len(tasks)==0:
@@ -28,19 +45,28 @@ while True:
             else:
                   for i, task in enumerate(tasks, start=1):
                         print(f"{i}. {task}")
-                  num = int (input("enter task number to remove : "))
+
+                  try:
+                         num = int (input("enter task number to remove : "))
 
 
-                  if 1 <= num <= len(tasks):
-                        removed = tasks.pop(num -1)
-                        print(f"Removed: {removed}")
-                  else:
-                        print("invalid task number")
-        
+                         if 1 <= num <= len(tasks):
+                           removed = tasks.pop(num -1)
+                         #rewirte the updated tasks 
+
+                           with open("todolist_file.txt", "w") as file:
+                               for task in tasks:
+                                     file.write(task +"\n")
+                               print(f"Removed: {removed}")
+                      
+                         else:
+                           print("invalid task number")
+                  except ValueError:
+                       print("neter valid info")
       elif choice =="4":
          print("goodbye.")
          break
-             
+
       else: 
-            print("Invalid choioce")
-    
+            print("Invalid choioce // GIT check")
+     
